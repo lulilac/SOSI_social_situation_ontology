@@ -259,9 +259,6 @@ The ontology is implemented using:
 * **RDF**
 * **Turtle (.ttl) serialization**
 
-Namespace:
-
-http://www.phd-project.org/ontology/sosi#
 
 ---
 
