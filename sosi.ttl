@@ -1,0 +1,612 @@
+@prefix : <http://www.phd-project.org/ontology/sosi#> .
+@prefix oro: <http://kb.openrobots.org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosi: <http://www.phd-project.org/ontology/sosi#> .
+@base <http://www.phd-project.org/ontology/sosi> .
+
+<http://www.phd-project.org/ontology/sosi> rdf:type owl:Ontology ;
+                                            rdfs:label "SOSI: Robotic Social Interaction Taxonomy" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.phd-project.org/ontology/sosi#description
+sosi:description rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.phd-project.org/ontology/sosi#hasCardinality
+sosi:hasCardinality rdf:type owl:ObjectProperty ;
+                    rdfs:domain sosi:SocialSituation ;
+                    rdfs:range sosi:Cardinality ;
+                    rdfs:comment "Group size category. Links a SocialSituation to a Cardinality." ;
+                    rdfs:label "has cardinality" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasCrowdContextBg
+sosi:hasCrowdContextBg rdf:type owl:ObjectProperty ;
+                       rdfs:domain sosi:SocialSituation ;
+                       rdfs:range sosi:Social_background ;
+                       rdfs:comment "Crowd background (crowded/not). Links a SocialSituation to a Social_background." ;
+                       rdfs:label "has crowd context bg" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasEmotionalValence
+sosi:hasEmotionalValence rdf:type owl:ObjectProperty ;
+                         rdfs:domain sosi:SocialSituation ;
+                         rdfs:range sosi:AffectiveValence ;
+                         rdfs:comment "Affective tone (positive/neutral/negative). Links a SocialSituation to an EmotionalValence." ;
+                         rdfs:label "has emotional valence" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasEngagementLevel
+sosi:hasEngagementLevel rdf:type owl:ObjectProperty ;
+                        rdfs:domain sosi:SocialSituation ;
+                        rdfs:range sosi:EngagementLevel .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasFormality
+sosi:hasFormality rdf:type owl:ObjectProperty ;
+                  rdfs:range sosi:SituationFormality ;
+                  rdfs:comment "Formal/informal attribute of a location. Links a Location to a Formality." ;
+                  rdfs:label "has formality" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasInteractionType
+sosi:hasInteractionType rdf:type owl:ObjectProperty ;
+                        rdfs:domain sosi:SocialSituation ;
+                        rdfs:comment "Interaction type such as cooperative/competitive/persuasive/conforming/observational. Links a SocialSituation to an InteractionType." ;
+                        rdfs:label "has interaction type" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasInterdependenceLevel
+sosi:hasInterdependenceLevel rdf:type owl:ObjectProperty ;
+                             rdfs:domain sosi:SocialSituation ;
+                             rdfs:range sosi:InterdependenceLevel ;
+                             rdfs:comment "High vs low interdependence. Links a SocialSituation to an InterdependenceLevel." ;
+                             rdfs:label "has interdependence level" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasLocation
+sosi:hasLocation rdf:type owl:ObjectProperty ;
+                 rdfs:domain sosi:SocialSituation ;
+                 rdfs:comment "Scene’s where (place-type). Links a SocialSituation to a Location." ;
+                 rdfs:label "has location" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasNonverbalCue
+sosi:hasNonverbalCue rdf:type owl:ObjectProperty ;
+                     rdfs:domain sosi:SocialSituation ;
+                     rdfs:range sosi:NonVerbalCommunication ;
+                     rdfs:comment "Which nonverbal cues are used (eye contact, proximity, etc.). Links a SocialSituation to a NonverbalCue." ;
+                     rdfs:label "has nonverbal cue" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasNonverbalSignaling
+sosi:hasNonverbalSignaling rdf:type owl:ObjectProperty ;
+                           rdfs:domain sosi:SocialSituation ;
+                           rdfs:comment "Nonverbal present/absent. Links a SocialSituation to a NonverbalSignaling." ;
+                           rdfs:label "has nonverbal signaling" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasPhysicalType
+sosi:hasPhysicalType rdf:type owl:ObjectProperty ;
+                     rdfs:comment "Indoor/outdoor attribute of a location. Links a Location to a PhysicalEnvironmentType." ;
+                     rdfs:label "has physical type (indoor/outdoor)" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasRelationType
+sosi:hasRelationType rdf:type owl:ObjectProperty ;
+                     rdfs:domain sosi:SocialSituation ;
+                     rdfs:range sosi:SocialRelationType ;
+                     rdfs:comment "Object property hasRelationType in the SOSI ontology." ;
+                     rdfs:label "has social relation type" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasSpeechActivity
+sosi:hasSpeechActivity rdf:type owl:ObjectProperty ;
+                       rdfs:domain sosi:SocialSituation ;
+                       rdfs:range sosi:Speaking ;
+                       rdfs:comment "Speech present/absent. Links a SocialSituation to a SpeechActivity." ;
+                       rdfs:label "has speech activity" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.phd-project.org/ontology/sosi#hasAffectiveValence
+sosi:hasAffectiveValence rdf:type owl:DatatypeProperty ;
+                         rdfs:domain sosi:AffectiveValence ;
+                         rdfs:range [ rdf:type rdfs:Datatype ;
+                                      owl:oneOf [ rdf:type rdf:List ;
+                                                  rdf:first "Negative" ;
+                                                  rdf:rest [ rdf:type rdf:List ;
+                                                             rdf:first "Neutral" ;
+                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                        rdf:first "Positive" ;
+                                                                        rdf:rest rdf:nil
+                                                                      ]
+                                                           ]
+                                                ]
+                                    ] ;
+                         rdfs:comment """negative: Overall negative/unpleasant affect (frustration, tension, discomfort). Examples: raised-voice argument; visible annoyance while being interrupted.
+
+neutral: Neither clearly positive nor negative affect; emotionally flat or task-focused. Examples: routine check-in with neutral tone; quiet waiting in a queue.
+
+positive: Overall positive/pleasant affect in the situation (warm, friendly, satisfied). Examples: smiling greetings; enthusiastic praise after success.""" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasEngagementLevel
+sosi:hasEngagementLevel rdf:type owl:DatatypeProperty ;
+                        rdfs:domain sosi:EngagementLevel ;
+                        rdfs:range [ rdf:type rdfs:Datatype ;
+                                     owl:oneOf [ rdf:type rdf:List ;
+                                                 rdf:first "Disengaged" ;
+                                                 rdf:rest [ rdf:type rdf:List ;
+                                                            rdf:first "Engaged" ;
+                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                       rdf:first "Mixed" ;
+                                                                       rdf:rest rdf:nil
+                                                                     ]
+                                                          ]
+                                               ]
+                                   ] .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasPhysicalEnvironmentType
+sosi:hasPhysicalEnvironmentType rdf:type owl:DatatypeProperty .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasProxemicsValue
+sosi:hasProxemicsValue rdf:type owl:DatatypeProperty ;
+                       rdfs:domain sosi:GroupProxemics ;
+                       rdfs:range [ rdf:type rdfs:Datatype ;
+                                    owl:oneOf [ rdf:type rdf:List ;
+                                                rdf:first "Intimate" ;
+                                                rdf:rest [ rdf:type rdf:List ;
+                                                           rdf:first "Mixed" ;
+                                                           rdf:rest [ rdf:type rdf:List ;
+                                                                      rdf:first "Personal" ;
+                                                                      rdf:rest [ rdf:type rdf:List ;
+                                                                                 rdf:first "Public" ;
+                                                                                 rdf:rest [ rdf:type rdf:List ;
+                                                                                            rdf:first "Social" ;
+                                                                                            rdf:rest rdf:nil
+                                                                                          ]
+                                                                               ]
+                                                                    ]
+                                                         ]
+                                              ]
+                                  ] .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasPurpose
+sosi:hasPurpose rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf owl:topDataProperty ;
+                rdfs:domain sosi:GoalDirectedInteraction ;
+                rdfs:range xsd:string ;
+                rdfs:comment "free description of the task, purpose, goal of the social interaction" .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasRelativeBodyPlacement
+sosi:hasRelativeBodyPlacement rdf:type owl:DatatypeProperty ;
+                              rdfs:domain sosi:RelativeBodyPlacement ;
+                              rdfs:range [ rdf:type rdfs:Datatype ;
+                                           owl:oneOf [ rdf:type rdf:List ;
+                                                       rdf:first "Back to back" ;
+                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                  rdf:first "Facing" ;
+                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                             rdf:first "Mixed" ;
+                                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                                        rdf:first "Side by side" ;
+                                                                                        rdf:rest rdf:nil
+                                                                                      ]
+                                                                           ]
+                                                                ]
+                                                     ]
+                                         ] .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasSituationFormality
+sosi:hasSituationFormality rdf:type owl:DatatypeProperty ;
+                           rdfs:subPropertyOf owl:topDataProperty ;
+                           rdfs:domain sosi:SituationFormality ;
+                           rdfs:range [ rdf:type rdfs:Datatype ;
+                                        owl:oneOf [ rdf:type rdf:List ;
+                                                    rdf:first "Formal" ;
+                                                    rdf:rest [ rdf:type rdf:List ;
+                                                               rdf:first "Informal" ;
+                                                               rdf:rest rdf:nil
+                                                             ]
+                                                  ]
+                                      ] ;
+                           rdfs:comment "formal: Formal setting (both clothes and sccene) ’. Examples: courtroom hearing; corporate presentation room." ,
+                                        """formal: Formal setting (both clothes and sccene) ’. Examples: courtroom hearing; corporate presentation room.
+
+Informal: Informal/casual setting with relaxed norms and more personal tone. Examples: kitchen conversation at home; chatting at a café with friends.""" .
+
+
+###  http://www.w3.org/2002/07/owl#topDataProperty
+owl:topDataProperty rdfs:domain sosi:PhysicalEnvironment ;
+                    rdfs:range [ rdf:type rdfs:Datatype ;
+                                 owl:oneOf [ rdf:type rdf:List ;
+                                             rdf:first "Indoor" ;
+                                             rdf:rest [ rdf:type rdf:List ;
+                                                        rdf:first "Outdoor" ;
+                                                        rdf:rest rdf:nil
+                                                      ]
+                                           ]
+                               ] .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.phd-project.org/ontology/sosi#AffectiveValence
+sosi:AffectiveValence rdf:type owl:Class ;
+                      rdfs:subClassOf sosi:InteractionState ;
+                      rdfs:comment "Affective polarity (pleasantness) expressed or perceived in the situation, used to tag whether the episode feels positive, neutral, or negative. Examples: supportive encouragement (positive); irritated complaint (negative)."@en .
+
+
+###  http://www.phd-project.org/ontology/sosi#AgentsConstruct
+sosi:AgentsConstruct rdf:type owl:Class ;
+                     rdfs:subClassOf sosi:SocialSituationConstruct ;
+                     rdfs:comment "Characteristics of the social agents taking part to situation." ;
+                     rdfs:seeAlso "in Burke's dramatistic pentad, equivalent to the 'agent' element." .
+
+
+###  http://www.phd-project.org/ontology/sosi#AimlessInteraction
+sosi:AimlessInteraction rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:InteractionPurpose ;
+                        rdfs:comment "The interaction has no predefined or clearly identifiable goal. Example: informal chat between colleagues about their weekend." .
+
+
+###  http://www.phd-project.org/ontology/sosi#BodyLanguage
+sosi:BodyLanguage rdf:type owl:Class ;
+                  rdfs:subClassOf sosi:NonVerbalCommunication .
+
+
+###  http://www.phd-project.org/ontology/sosi#Cardinality
+sosi:Cardinality rdf:type owl:Class ;
+                 rdfs:subClassOf sosi:AgentsConstruct ;
+                 rdfs:comment "Group-size category—how many participants are involved in the episode. Examples: a dyadic conversation; a triad planning together."@en ;
+                 rdfs:label "Cardinality (group size)" .
+
+
+###  http://www.phd-project.org/ontology/sosi#CommunicationModality
+sosi:CommunicationModality rdf:type owl:Class ;
+                           rdfs:subClassOf sosi:InteractionStructure ;
+                           rdfs:comment "Observable communicative signals (especially useful for perception/annotation)." .
+
+
+###  http://www.phd-project.org/ontology/sosi#CompetitiveInteraction
+sosi:CompetitiveInteraction rdf:type owl:Class ;
+                            rdfs:subClassOf sosi:SocialDynamics ;
+                            sosi:description "" ;
+                            rdfs:comment "Participants pursue opposed/scarce outcomes (win/lose tradeoff). Examples: rivals competing for the same prize; bidders competing in an auction."@en ;
+                            rdfs:label "competitive" .
+
+
+###  http://www.phd-project.org/ontology/sosi#ConformingInteraction
+sosi:ConformingInteraction rdf:type owl:Class ;
+                           rdfs:subClassOf sosi:SocialNormsFollowing ;
+                           rdfs:comment "Behavior primarily reflects compliance with expected norms/rules. Examples: greeting with customary politeness in a formal setting; following safety instructions during a drill."@en ;
+                           rdfs:label "conforming" .
+
+
+###  http://www.phd-project.org/ontology/sosi#CooperativeInteraction
+sosi:CooperativeInteraction rdf:type owl:Class ;
+                            rdfs:subClassOf sosi:SocialDynamics ;
+                            rdfs:comment "Participants pursue aligned goals or mutual benefit; coordination is supportive. Examples: two people jointly assembling furniture; teammates sharing information to solve a problem."@en ;
+                            rdfs:label "cooperative" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Crowd
+sosi:Crowd rdf:type owl:Class ;
+           rdfs:subClassOf sosi:Cardinality ;
+           rdfs:comment "Large social group, individual can not easily be counted as they are many." .
+
+
+###  http://www.phd-project.org/ontology/sosi#Crowded
+sosi:Crowded rdf:type owl:Class ;
+             rdfs:subClassOf sosi:Social_background ;
+             rdfs:comment "High density of surrounding people / crowded context." ;
+             rdfs:label "crowded" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Crying
+sosi:Crying rdf:type owl:Class ;
+            rdfs:subClassOf sosi:NonVerbalCommunication .
+
+
+###  http://www.phd-project.org/ontology/sosi#DeicticGesture
+sosi:DeicticGesture rdf:type owl:Class ;
+                    rdfs:subClassOf sosi:Gesture .
+
+
+###  http://www.phd-project.org/ontology/sosi#Dyad
+sosi:Dyad rdf:type owl:Class ;
+          rdfs:subClassOf sosi:Cardinality ;
+          rdfs:comment "Two participants interacting 1-to-1. Examples: customer and cashier exchanging a request; two colleagues discussing a document."@en ;
+          rdfs:label "dyad_1to1" .
+
+
+###  http://www.phd-project.org/ontology/sosi#EngagementLevel
+sosi:EngagementLevel rdf:type owl:Class ;
+                     rdfs:subClassOf sosi:AgentsConstruct ;
+                     rdfs:comment "How engaged participants are (attention, involvement, responsiveness). In this ontology, concrete states may be represented as individuals (e.g., oro:engaged). Examples: mutual attention and turn-taking (high); one person distracted by a phone (low)."@en ;
+                     rdfs:label "Engagement level" .
+
+
+###  http://www.phd-project.org/ontology/sosi#EyeContact
+sosi:EyeContact rdf:type owl:Class ;
+                rdfs:subClassOf sosi:NonVerbalCommunication ;
+                rdfs:comment "At least one person has established eye contact with another. It might or might not be reciprocal." .
+
+
+###  http://www.phd-project.org/ontology/sosi#Gesture
+sosi:Gesture rdf:type owl:Class ;
+             rdfs:subClassOf sosi:NonVerbalCommunication .
+
+
+###  http://www.phd-project.org/ontology/sosi#GivingSpeech
+sosi:GivingSpeech rdf:type owl:Class ;
+                  rdfs:subClassOf sosi:Speaking .
+
+
+###  http://www.phd-project.org/ontology/sosi#GoalDirectedInteraction
+sosi:GoalDirectedInteraction rdf:type owl:Class ;
+                             rdfs:subClassOf sosi:InteractionPurpose .
+
+
+###  http://www.phd-project.org/ontology/sosi#GroupProxemics
+sosi:GroupProxemics rdf:type owl:Class ;
+                    rdfs:subClassOf sosi:NonVerbalCommunication ;
+                    rdfs:comment "Assessment of the group-level proxemics. 'Mixed' means that different people in the group are positioned within different proxemics zone." .
+
+
+###  http://www.phd-project.org/ontology/sosi#HighInterdependence
+sosi:HighInterdependence rdf:type owl:Class ;
+                         rdfs:subClassOf sosi:InterdependenceLevel ;
+                         rdfs:comment "Strong mutual dependence—coordination is required and outcomes are linked. Examples: carrying a table together; synchronizing steps during a joint procedure."@en ;
+                         rdfs:label "high_interdependence" .
+
+
+###  http://www.phd-project.org/ontology/sosi#IconicGesture
+sosi:IconicGesture rdf:type owl:Class ;
+                   rdfs:subClassOf sosi:Gesture .
+
+
+###  http://www.phd-project.org/ontology/sosi#InformalChatting
+sosi:InformalChatting rdf:type owl:Class ;
+                      rdfs:subClassOf sosi:Speaking .
+
+
+###  http://www.phd-project.org/ontology/sosi#InteractionPurpose
+sosi:InteractionPurpose rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:SocialSituationConstruct ;
+                        rdfs:seeAlso "in Burke's dramatistic pentad, equivalent to the 'purpose' element." .
+
+
+###  http://www.phd-project.org/ontology/sosi#InteractionState
+sosi:InteractionState rdf:type owl:Class ;
+                      rdfs:subClassOf sosi:SocialSituationConstruct ;
+                      rdfs:seeAlso "in Burke's dramatistic pentad, equivalent to the 'act' element." .
+
+
+###  http://www.phd-project.org/ontology/sosi#InteractionStructure
+sosi:InteractionStructure rdf:type owl:Class ;
+                          rdfs:subClassOf sosi:SocialSituationConstruct ;
+                          rdfs:comment "Dimension-family describing how participants relate through goals, coordination, norms, and dependence. Examples: cooperative teamwork; persuasive negotiation."@en ;
+                          rdfs:seeAlso "in Burke's dramatistic pentad, equivalent to the 'agency' element." .
+
+
+###  http://www.phd-project.org/ontology/sosi#InterdependenceLevel
+sosi:InterdependenceLevel rdf:type owl:Class ;
+                          rdfs:subClassOf sosi:InteractionStructure ;
+                          rdfs:comment "How strongly participants’ outcomes or choices depend on one another. Examples: tightly coordinated handover (high); parallel independent work in same room (low)."@en ;
+                          rdfs:label "Interdependence level" .
+
+
+###  http://www.phd-project.org/ontology/sosi#LargeGroup
+sosi:LargeGroup rdf:type owl:Class ;
+                rdfs:subClassOf sosi:Cardinality ;
+                rdfs:comment "Large group, still countable" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Laughter
+sosi:Laughter rdf:type owl:Class ;
+              rdfs:subClassOf sosi:NonVerbalCommunication .
+
+
+###  http://www.phd-project.org/ontology/sosi#LeaderFollower
+sosi:LeaderFollower rdf:type owl:Class ;
+                    rdfs:subClassOf sosi:SocialRelationType ;
+                    rdfs:comment "Asymmetric relation—one participant leads/directs and the other follows/assists. Examples: supervisor giving instructions to an intern; tour guide leading a group member."@en ;
+                    rdfs:label "leader_follower" .
+
+
+###  http://www.phd-project.org/ontology/sosi#LowInterdependence
+sosi:LowInterdependence rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:InterdependenceLevel ;
+                        rdfs:comment "Weak dependence—participants’ outcomes are mostly separable. Examples: two people working on separate laptops at the same table; individuals browsing independently in a shop."@en ;
+                        rdfs:label "low_interdependence" .
+
+
+###  http://www.phd-project.org/ontology/sosi#NonVerbalCommunication
+sosi:NonVerbalCommunication rdf:type owl:Class ;
+                            rdfs:subClassOf sosi:CommunicationModality ;
+                            rdfs:comment "At least one person is performing an act of non-verbal communication." ;
+                            rdfs:label "Nonverbal communication" .
+
+
+###  http://www.phd-project.org/ontology/sosi#NonVerbalSpeech
+sosi:NonVerbalSpeech rdf:type owl:Class ;
+                     rdfs:subClassOf sosi:NonVerbalCommunication .
+
+
+###  http://www.phd-project.org/ontology/sosi#NotCrowded
+sosi:NotCrowded rdf:type owl:Class ;
+                rdfs:subClassOf sosi:Social_background ;
+                rdfs:comment "Class NotCrowded in the SOSI ontology." ;
+                rdfs:label "not_crowded" .
+
+
+###  http://www.phd-project.org/ontology/sosi#ObservationalInteraction
+sosi:ObservationalInteraction rdf:type owl:Class ;
+                              rdfs:subClassOf sosi:SocialNormsFollowing ;
+                              rdfs:comment "Predominantly observing/monitoring rather than directly coordinating with others. Examples: a security guard watching a crowd; a passerby observing a street performance."@en ;
+                              rdfs:label "observational" .
+
+
+###  http://www.phd-project.org/ontology/sosi#PeerRelation
+sosi:PeerRelation rdf:type owl:Class ;
+                  rdfs:subClassOf sosi:SocialRelationType ;
+                  rdfs:comment "Symmetric relation—participants have similar status/authority and interact as equals. Examples: classmates working together; two coworkers at the same level coordinating."@en ;
+                  rdfs:label "peer_peer" .
+
+
+###  http://www.phd-project.org/ontology/sosi#PersuasiveInteraction
+sosi:PersuasiveInteraction rdf:type owl:Class ;
+                           rdfs:subClassOf sosi:SocialDynamics ;
+                           rdfs:comment "One participant aims to change another’s beliefs, decisions, or actions. Examples: a salesperson pitching a product; a friend convincing someone to join an event."@en ;
+                           rdfs:label "persuasive" .
+
+
+###  http://www.phd-project.org/ontology/sosi#PhysicalEnvironment
+sosi:PhysicalEnvironment rdf:type owl:Class ;
+                         rdfs:subClassOf sosi:SocioPhysicalContext ;
+                         rdfs:comment "Describes properties of the environment/location that shape interaction norms (e.g., formality, indoor/outdoor). Examples: a formal indoor office meeting; an informal chat outdoors in a park." .
+
+
+###  http://www.phd-project.org/ontology/sosi#RelativeBodyPlacement
+sosi:RelativeBodyPlacement rdf:type owl:Class ;
+                           rdfs:subClassOf sosi:NonVerbalCommunication ;
+                           rdfs:comment "How bodies are oriented relative to others (facing toward/away; alignment)." .
+
+
+###  http://www.phd-project.org/ontology/sosi#Shouting
+sosi:Shouting rdf:type owl:Class ;
+              rdfs:subClassOf sosi:Speaking .
+
+
+###  http://www.phd-project.org/ontology/sosi#SituationFormality
+sosi:SituationFormality rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:Social_Environment ;
+                        rdfs:comment "How the setting’s social norms and expectations are (etiquette, role clarity, professionalism). Examples: job interview (formal); work meeting (formal); friends hanging out (informal)."@en .
+
+
+###  http://www.phd-project.org/ontology/sosi#SmallGroup
+sosi:SmallGroup rdf:type owl:Class ;
+                rdfs:subClassOf sosi:Cardinality ;
+                rdfs:comment "Small group (more than 3, not large group, typically up to about 10 people) engaged in a shared episode. Examples: 5–8 people in a project stand-up; a small family discussing plans."@en ;
+                rdfs:label "small_group_n" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocialDynamics
+sosi:SocialDynamics rdf:type owl:Class ;
+                    rdfs:subClassOf sosi:InteractionStructure ;
+                    rdfs:comment "Interaction organized around explicit goals/outcomes (tasks, decisions, resource allocation). Examples: planning who does what in a project; negotiating a purchase."@en ;
+                    rdfs:label "Goal-directed interaction type" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocialNormsFollowing
+sosi:SocialNormsFollowing rdf:type owl:Class ;
+                          rdfs:subClassOf sosi:InteractionPurpose ;
+                          rdfs:comment "Interaction organized primarily around social norms, conventions, or monitoring rather than explicit shared goals. Examples: standing in line following queue rules; maintaining silence in a library." .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocialRelationType
+sosi:SocialRelationType rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:AgentsConstruct ;
+                        rdfs:comment "Structural relationship between participants (status/authority symmetry vs asymmetry). Examples: two peers collaborating; leader delegating to a follower."@en ;
+                        rdfs:label "Social relation type" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocialSituation
+sosi:SocialSituation rdf:type owl:Class ;
+                     rdfs:comment "An interaction episode to be annotated (the “thing you’re describing”: a meeting, request, collaboration, etc.)." ;
+                     rdfs:label "Social Situation" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocialSituationConstruct
+sosi:SocialSituationConstruct rdf:type owl:Class .
+
+
+###  http://www.phd-project.org/ontology/sosi#Social_Environment
+sosi:Social_Environment rdf:type owl:Class ;
+                        rdfs:subClassOf sosi:SocioPhysicalContext ;
+                        rdfs:comment "The general notion of setting/context where a situation occurs." ;
+                        rdfs:label "Social Environment" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Social_background
+sosi:Social_background rdf:type owl:Class ;
+                       rdfs:subClassOf sosi:Social_Environment ;
+                       rdfs:comment "Contextual background conditions that shape the situation but aren’t “the interaction mechanics” themselves." ;
+                       rdfs:label "crowded background" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SocioPhysicalContext
+sosi:SocioPhysicalContext rdf:type owl:Class ;
+                          rdfs:subClassOf sosi:SocialSituationConstruct ;
+                          rdfs:seeAlso "in Burke's dramatistic pentad, equivalent to the 'scene' element." .
+
+
+###  http://www.phd-project.org/ontology/sosi#Solo
+sosi:Solo rdf:type owl:Class ;
+          rdfs:subClassOf sosi:Cardinality ;
+          rdfs:comment "Single-person situation focused on one participant (others absent or not relevant). Examples: a person practicing a speech alone; someone waiting alone at a kiosk."@en ;
+          rdfs:label "single_person" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Speaking
+sosi:Speaking rdf:type owl:Class ;
+              owl:equivalentClass sosi:Verbal_communication ;
+              rdfs:subClassOf sosi:CommunicationModality ;
+              rdfs:comment "At least one person in the social situation is using verbal communication"@en ;
+              rdfs:label "Speaking" .
+
+
+###  http://www.phd-project.org/ontology/sosi#SymbolicGesture
+sosi:SymbolicGesture rdf:type owl:Class ;
+                     rdfs:subClassOf sosi:Gesture .
+
+
+###  http://www.phd-project.org/ontology/sosi#Triad
+sosi:Triad rdf:type owl:Class ;
+           rdfs:subClassOf sosi:Cardinality ;
+           rdfs:comment "Three participants interacting. Examples: three students discussing homework; a manager with two team members in a brief huddle."@en ;
+           rdfs:label "triad" .
+
+
+###  http://www.phd-project.org/ontology/sosi#Verbal_communication
+sosi:Verbal_communication rdf:type owl:Class ;
+                          rdfs:subClassOf sosi:CommunicationModality .
+
+
+###  http://www.phd-project.org/ontology/sosi#Whispering
+sosi:Whispering rdf:type owl:Class ;
+                rdfs:subClassOf sosi:Speaking .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+sosi:hasEngagementLevel rdfs:comment "Engagement state(s). Links a SocialSituation to an engagement level (often modeled as oro: individuals)." ;
+                        rdfs:label "has engagement level" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
