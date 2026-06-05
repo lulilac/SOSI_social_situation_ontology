@@ -6,7 +6,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sosi: <http://www.phd-project.org/ontology/sosi#> .
-@base <http://www.phd-project.org/ontology/sosi> .
+@base <http://www.phd-project.org/ontology/sosi#> .
 
 <http://www.phd-project.org/ontology/sosi> rdf:type owl:Ontology ;
                                             rdfs:label "SOSI: Robotic Social Interaction Taxonomy" .
@@ -34,7 +34,7 @@ sosi:hasCardinality rdf:type owl:ObjectProperty ;
 ###  http://www.phd-project.org/ontology/sosi#hasCrowdContextBg
 sosi:hasCrowdContextBg rdf:type owl:ObjectProperty ;
                        rdfs:domain sosi:SocialSituation ;
-                       rdfs:range sosi:Social_background ;
+                       rdfs:range sosi:Background_Participants ;
                        rdfs:comment "Crowd background (crowded/not). Links a SocialSituation to a Social_background." ;
                        rdfs:label "has crowd context bg" .
 
@@ -49,15 +49,15 @@ sosi:hasEmotionalValence rdf:type owl:ObjectProperty ;
 
 ###  http://www.phd-project.org/ontology/sosi#hasEngagementLevel
 sosi:hasEngagementLevel rdf:type owl:ObjectProperty ;
-                        rdfs:domain sosi:SocialSituation ;
+                        rdfs:domain sosi:EngagementLevel ,
+                                    sosi:SocialSituation ;
                         rdfs:range sosi:EngagementLevel .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasFormality
 sosi:hasFormality rdf:type owl:ObjectProperty ;
-                  rdfs:range sosi:SituationFormality ;
-                  rdfs:comment "Formal/informal attribute of a location. Links a Location to a Formality." ;
-                  rdfs:label "has formality" .
+                  rdfs:domain sosi:SituationFormality ;
+                  rdfs:range sosi:SituationFormality .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasInteractionType
@@ -147,7 +147,6 @@ positive: Overall positive/pleasant affect in the situation (warm, friendly, sat
 
 ###  http://www.phd-project.org/ontology/sosi#hasEngagementLevel
 sosi:hasEngagementLevel rdf:type owl:DatatypeProperty ;
-                        rdfs:domain sosi:EngagementLevel ;
                         rdfs:range [ rdf:type rdfs:Datatype ;
                                      owl:oneOf [ rdf:type rdf:List ;
                                                  rdf:first "Disengaged" ;
@@ -160,6 +159,19 @@ sosi:hasEngagementLevel rdf:type owl:DatatypeProperty ;
                                                           ]
                                                ]
                                    ] .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasFormality
+sosi:hasFormality rdf:type owl:DatatypeProperty ;
+                  rdfs:range [ rdf:type rdfs:Datatype ;
+                               owl:oneOf [ rdf:type rdf:List ;
+                                           rdf:first "Formal" ;
+                                           rdf:rest [ rdf:type rdf:List ;
+                                                      rdf:first "Informal" ;
+                                                      rdf:rest rdf:nil
+                                                    ]
+                                         ]
+                             ] .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasPhysicalEnvironmentType
@@ -272,6 +284,13 @@ sosi:AimlessInteraction rdf:type owl:Class ;
                         rdfs:comment "The interaction has no predefined or clearly identifiable goal. Example: informal chat between colleagues about their weekend." .
 
 
+###  http://www.phd-project.org/ontology/sosi#Background_Participants
+sosi:Background_Participants rdf:type owl:Class ;
+                             rdfs:subClassOf sosi:Social_Environment ;
+                             rdfs:comment "Contextual background conditions that shape the situation but aren’t “the interaction mechanics” themselves." ;
+                             rdfs:label "crowded background" .
+
+
 ###  http://www.phd-project.org/ontology/sosi#BodyLanguage
 sosi:BodyLanguage rdf:type owl:Class ;
                   rdfs:subClassOf sosi:NonVerbalCommunication .
@@ -320,7 +339,7 @@ sosi:Crowd rdf:type owl:Class ;
 
 ###  http://www.phd-project.org/ontology/sosi#Crowded
 sosi:Crowded rdf:type owl:Class ;
-             rdfs:subClassOf sosi:Social_background ;
+             rdfs:subClassOf sosi:Background_Participants ;
              rdfs:comment "High density of surrounding people / crowded context." ;
              rdfs:label "crowded" .
 
@@ -458,7 +477,7 @@ sosi:NonVerbalSpeech rdf:type owl:Class ;
 
 ###  http://www.phd-project.org/ontology/sosi#NotCrowded
 sosi:NotCrowded rdf:type owl:Class ;
-                rdfs:subClassOf sosi:Social_background ;
+                rdfs:subClassOf sosi:Background_Participants ;
                 rdfs:comment "Class NotCrowded in the SOSI ontology." ;
                 rdfs:label "not_crowded" .
 
@@ -551,13 +570,6 @@ sosi:Social_Environment rdf:type owl:Class ;
                         rdfs:label "Social Environment" .
 
 
-###  http://www.phd-project.org/ontology/sosi#Social_background
-sosi:Social_background rdf:type owl:Class ;
-                       rdfs:subClassOf sosi:Social_Environment ;
-                       rdfs:comment "Contextual background conditions that shape the situation but aren’t “the interaction mechanics” themselves." ;
-                       rdfs:label "crowded background" .
-
-
 ###  http://www.phd-project.org/ontology/sosi#SocioPhysicalContext
 sosi:SocioPhysicalContext rdf:type owl:Class ;
                           rdfs:subClassOf sosi:SocialSituationConstruct ;
@@ -607,6 +619,10 @@ sosi:Whispering rdf:type owl:Class ;
 
 sosi:hasEngagementLevel rdfs:comment "Engagement state(s). Links a SocialSituation to an engagement level (often modeled as oro: individuals)." ;
                         rdfs:label "has engagement level" .
+
+
+sosi:hasFormality rdfs:comment "Formal/informal attribute of a location. Links a Location to a Formality." ;
+                  rdfs:label "has formality" .
 
 
 ###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
