@@ -9,9 +9,9 @@
 @base <http://www.phd-project.org/ontology/sosi#> .
 
 <http://www.phd-project.org/ontology/sosi> rdf:type owl:Ontology ;
-    owl:versionIRI <http://www.phd-project.org/ontology/sosi/3.0.0> ;
-    owl:priorVersion <http://www.phd-project.org/ontology/sosi/2.0.0> ;
-    owl:versionInfo "3.0.0" ;
+    owl:versionIRI <http://www.phd-project.org/ontology/sosi/3.1.0> ;
+    owl:priorVersion <http://www.phd-project.org/ontology/sosi/3.0.0> ;
+    owl:versionInfo "3.1.0" ;
     dcterms:title "SOSI: SOcial SItuation ontology for robotics"@en ;
     dcterms:description """SOSI is a formal vocabulary for describing social situations observed by robots in human environments. A social situation (sosi:SocialSituation) is decomposed into interpretable, compositional constructs organised along Burke's dramatistic pentad: Act (sosi:InteractionState — what is happening, i.e. affect, communicative behaviour and spatial configuration), Scene (sosi:SocioPhysicalContext — the socio-physical setting), Agent (sosi:AgentsConstruct — participant structure), Agency (sosi:InteractionStructure — the interactional mechanism), and Purpose (sosi:InteractionPurpose — whether the interaction is goal-directed).
 
@@ -19,7 +19,7 @@ Each dimension is modelled as a class taxonomy whose leaf values are also provid
 
 SOSI is a labelling vocabulary. It is deliberately decoupled from any particular dataset, generation pipeline or model: it carries no prompt templates, no release-specific dimension profiles and no dataset provenance. It describes the externally observable interactional configuration of a scene, not the participants' internal mental states."""@en ;
     dcterms:created "2025-01-01"^^xsd:date ;
-    dcterms:modified "2026-08-17"^^xsd:date ;
+    dcterms:modified "2026-08-27"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     dcterms:source "Burke, K. (1969). A Grammar of Motives. University of California Press." ;
     rdfs:label "SOSI: Robotic Social Situation Ontology"@en ;
@@ -29,7 +29,12 @@ SOSI is a labelling vocabulary. It is deliberately decoupled from any particular
  (2) sosi:Speaking became the closed dimension sosi:SpeechActivity with an explicit sosi:SpeechAbsent value, so speech absence is asserted rather than inferred from a missing triple; sosi:hasSpeechActivity is now functional.
  (3) sosi:SocialRelationType gained sosi:MixedRelation, a covering axiom, and a functional property, matching the mixed-value pattern of the other participant dimensions.
  (4) Cross-dimension coherence axioms were added (see "Situation patterns").
- (5) Terms were renamed for clarity; every 2.0.0 IRI survives as an owl:deprecated alias (see "Deprecated 2.0.0 aliases")."""@en .
+ (5) Terms were renamed for clarity; every 2.0.0 IRI survives as an owl:deprecated alias (see "Deprecated 2.0.0 aliases")."""@en ;
+    rdfs:comment """Changes in 3.1.0 relative to 3.0.0:
+ (1) Four participant/scene dimensions were added: sosi:Gender (male/female), sosi:AgeRange (young/mid-age/old) and sosi:Ethnicity (six values) under sosi:AgentsConstruct, and sosi:Activity (open, extensible) under sosi:InteractionState. Each is attributed collectively to the central interacting unit, not to individual agents. A mixed-gender value is deliberately not modelled, so a mixed-gender group is left unannotated on sosi:Gender.
+ (2) The sosi:LargeGroup/sosi:Crowd distinction (previously separated only by sosi:participantsIndividuallyCountable) was removed: the two were merged into sosi:LargeGroup (11+ participants); sosi:Crowd is now an owl:deprecated alias.
+ (3) The crowd-density dimension was renamed sosi:SocialBackground -> sosi:CrowdDensity (property sosi:hasSocialBackground -> sosi:hasCrowdDensity); the former names survive as owl:deprecated aliases.
+ (4) The definition of sosi:SituationFormality was clarified: formality is conveyed by both the physical/social context (scene) and participants' clothing, and where they conflict the context dominates (an office with casual clothing is still formal). This is an annotation guideline, not an enforced OWL axiom."""@en .
 
 
 #################################################################
@@ -57,7 +62,7 @@ sosi:maxParticipants rdf:type owl:AnnotationProperty ;
 
 sosi:participantsIndividuallyCountable rdf:type owl:AnnotationProperty ;
     rdfs:label "participants individually countable"@en ;
-    rdfs:comment "Distinguishes sosi:LargeGroup from sosi:Crowd, which overlap numerically: a large group is individually countable, a crowd is not. This, not a participant count, is the boundary between the two values."@en .
+    rdfs:comment "Whether the participants of a cardinality value can be individually counted (true for solo/dyad/triad/small group). In 2.0.0–3.0.0 this flag was the sole boundary between sosi:LargeGroup and sosi:Crowd; those two values were merged in 3.1.0, so the flag is now purely descriptive and no longer separates any two values."@en .
 
 
 #################################################################
@@ -69,15 +74,15 @@ sosi:hasCardinality rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:domain sosi:SocialSituation ;
     rdfs:range sosi:Cardinality ;
     rdfs:label "has cardinality"@en ;
-    rdfs:comment "Links a SocialSituation to its group-size category (solo, dyad, triad, small group, large group, crowd). Exactly one value per situation. Counts the interaction participants only; surrounding bystanders are described by sosi:hasSocialBackground instead."@en .
+    rdfs:comment "Links a SocialSituation to its group-size category (solo, dyad, triad, small group, large group). Exactly one value per situation. Counts the interaction participants only; surrounding bystanders are described by sosi:hasCrowdDensity instead."@en .
 
 
-###  http://www.phd-project.org/ontology/sosi#hasSocialBackground
-sosi:hasSocialBackground rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+###  http://www.phd-project.org/ontology/sosi#hasCrowdDensity
+sosi:hasCrowdDensity rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:domain sosi:SocialSituation ;
-    rdfs:range sosi:SocialBackground ;
-    rdfs:label "has social background"@en ;
-    rdfs:comment "Links a SocialSituation to the density of surrounding background people (crowded / not crowded). Describes the context around the interaction, not the interacting group itself, which is covered by sosi:hasCardinality. Renamed from sosi:hasCrowdContextBg in 3.0.0."@en .
+    rdfs:range sosi:CrowdDensity ;
+    rdfs:label "has crowd density"@en ;
+    rdfs:comment "Links a SocialSituation to the density of surrounding background people (crowded / not crowded). Describes the context around the interaction, not the interacting group itself, which is covered by sosi:hasCardinality. Named sosi:hasCrowdContextBg in 2.x and sosi:hasSocialBackground in 3.0.0; renamed to sosi:hasCrowdDensity in 3.1.0."@en .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasEmotionalValence
@@ -93,7 +98,7 @@ sosi:hasEngagementLevel rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:domain sosi:SocialSituation ;
     rdfs:range sosi:EngagementLevel ;
     rdfs:label "has engagement level"@en ;
-    rdfs:comment "Links a SocialSituation to the participants' engagement state (engaged, disengaged, mixed). 'Mixed' is the single value used when participants differ in engagement, so the property is functional. Scored over the interaction participants counted by sosi:hasCardinality only, never over the background people described by sosi:hasSocialBackground; consequently a solo situation cannot be mixed (see sosi:SoloSituation)."@en .
+    rdfs:comment "Links a SocialSituation to the participants' engagement state (engaged, disengaged, mixed). 'Mixed' is the single value used when participants differ in engagement, so the property is functional. Scored over the interaction participants counted by sosi:hasCardinality only, never over the background people described by sosi:hasCrowdDensity; consequently a solo situation cannot be mixed (see sosi:SoloSituation)."@en .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasFormality
@@ -101,7 +106,7 @@ sosi:hasFormality rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:domain sosi:SocialSituation ;
     rdfs:range sosi:SituationFormality ;
     rdfs:label "has formality"@en ;
-    rdfs:comment "Links a SocialSituation to the formality of its social setting (formal / informal), as conveyed by norms, etiquette, dress and scene."@en .
+    rdfs:comment "Links a SocialSituation to the formality of its social setting (formal / informal). Formality is conveyed jointly by the physical/social context (the scene) and by the participants' clothing/dress. Annotation guideline for the reasoner: where the two conflict, the context dominates — e.g. a person in an office wearing a t-shirt is still formal. This precedence is a definitional guideline, not an enforced OWL axiom (clothing and context are not separately modelled)."@en .
 
 
 ###  http://www.phd-project.org/ontology/sosi#hasInteractionType
@@ -192,6 +197,38 @@ sosi:hasInteractionPurpose rdf:type owl:ObjectProperty , owl:FunctionalProperty 
     rdfs:comment "Links a SocialSituation to its purpose category: goal-directed (participants pursue a shared objective) or aimless (socially driven exchange without a defined task goal)."@en .
 
 
+###  http://www.phd-project.org/ontology/sosi#hasParticipantGender
+sosi:hasParticipantGender rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain sosi:SocialSituation ;
+    rdfs:range sosi:Gender ;
+    rdfs:label "has participant gender"@en ;
+    rdfs:comment "Links a SocialSituation to the gender of its central interacting unit, attributed collectively to the participants (never to the background people). Added in 3.1.0. A mixed-gender value is intentionally not modelled, so a group whose participants differ in gender is left unannotated on this dimension."@en .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasAgeRange
+sosi:hasAgeRange rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain sosi:SocialSituation ;
+    rdfs:range sosi:AgeRange ;
+    rdfs:label "has age range"@en ;
+    rdfs:comment "Links a SocialSituation to the age range of its central interacting unit, attributed collectively to the participants. Added in 3.1.0."@en .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasEthnicity
+sosi:hasEthnicity rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain sosi:SocialSituation ;
+    rdfs:range sosi:Ethnicity ;
+    rdfs:label "has ethnicity"@en ;
+    rdfs:comment "Links a SocialSituation to the ethnicity attributed to its central interacting unit. Added in 3.1.0. A coarse, dataset-defined enumeration; it captures an externally apparent grouping for annotation, not a claim about the participants' identity."@en .
+
+
+###  http://www.phd-project.org/ontology/sosi#hasActivity
+sosi:hasActivity rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain sosi:SocialSituation ;
+    rdfs:range sosi:Activity ;
+    rdfs:label "has activity"@en ;
+    rdfs:comment "Links a SocialSituation to the coarse current activity of its central interacting unit (e.g. handling a phone, a routine task, observing, moving through the space). Added in 3.1.0. Open/extensible: deployments may add further activity values, so the dimension carries no covering axiom."@en .
+
+
 #################################################################
 #    Data properties
 #################################################################
@@ -230,11 +267,47 @@ sosi:SocialSituationConstruct rdf:type owl:Class ;
 sosi:InteractionState rdf:type owl:Class ;
     rdfs:subClassOf sosi:SocialSituationConstruct ;
     rdfs:label "Interaction state (Act)"@en ;
-    rdfs:comment "What is happening in the situation: the observable interactional state, expressed through affective tone, communicative behaviour and the spatial configuration of participants."@en ;
+    rdfs:comment "What is happening in the situation: the observable interactional state, expressed through affective tone, communicative behaviour, the spatial configuration of participants and the central unit's current activity."@en ;
     rdfs:seeAlso "Burke's dramatistic pentad: the 'act' element."@en .
 
 [] rdf:type owl:AllDisjointClasses ;
-   owl:members ( sosi:AffectiveValence sosi:CommunicationModality sosi:SpatialConfiguration ) .
+   owl:members ( sosi:AffectiveValence sosi:CommunicationModality sosi:SpatialConfiguration sosi:Activity ) .
+
+
+###  http://www.phd-project.org/ontology/sosi#Activity
+sosi:Activity rdf:type owl:Class ;
+    rdfs:subClassOf sosi:InteractionState ;
+    rdfs:label "Activity"@en ;
+    rdfs:comment "The coarse current activity of the central interacting unit — what the participant(s) are doing. Open and extensible: deployments may introduce further activities, so this dimension carries no covering axiom. Single-valued: sosi:hasActivity is functional. The values below are the initial vocabulary."@en ;
+    sosi:isClosedDimension false ;
+    sosi:isSingleValued true .
+
+sosi:HandlingPhone rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Activity ;
+    rdfs:label "Handling a phone"@en ;
+    skos:prefLabel "handling a phone in hand"@en ;
+    rdfs:comment "The central unit is handling a phone in hand (looking at, holding or using a mobile device)."@en .
+
+sosi:RoutineTask rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Activity ;
+    rdfs:label "Routine task"@en ;
+    skos:prefLabel "engaging in a routine task"@en ;
+    rdfs:comment "The central unit is engaging in an ordinary, non-noteworthy task."@en .
+
+sosi:ObservingSurroundings rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Activity ;
+    rdfs:label "Observing the surroundings"@en ;
+    skos:prefLabel "observing the surroundings"@en ;
+    rdfs:comment "The central unit is looking around / observing the surrounding environment."@en .
+
+sosi:MovingThroughSpace rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Activity ;
+    rdfs:label "Moving through the space"@en ;
+    skos:prefLabel "moving through the space"@en ;
+    rdfs:comment "The central unit is walking or otherwise moving through the space."@en .
+
+[] rdf:type owl:AllDisjointClasses ;
+   owl:members ( sosi:HandlingPhone sosi:RoutineTask sosi:ObservingSurroundings sosi:MovingThroughSpace ) .
 
 
 ###  http://www.phd-project.org/ontology/sosi#AffectiveValence
@@ -603,7 +676,7 @@ sosi:SocialEnvironment rdf:type owl:Class ;
     rdfs:comment "Grouping (not itself a dimension) for the social character of the setting where the situation occurs: its normative formality and the surrounding social background."@en .
 
 [] rdf:type owl:AllDisjointClasses ;
-   owl:members ( sosi:SituationFormality sosi:SocialBackground ) .
+   owl:members ( sosi:SituationFormality sosi:CrowdDensity ) .
 
 ###  http://www.phd-project.org/ontology/sosi#SituationFormality
 sosi:SituationFormality rdf:type owl:Class ;
@@ -611,7 +684,7 @@ sosi:SituationFormality rdf:type owl:Class ;
     owl:equivalentClass [ rdf:type owl:Class ;
                           owl:unionOf ( sosi:FormalSituation sosi:InformalSituation ) ] ;
     rdfs:label "Situation formality"@en ;
-    rdfs:comment "How strict the setting's social norms and expectations are (etiquette, role clarity, professionalism). Examples: job interview (formal); friends hanging out (informal)."@en ;
+    rdfs:comment "How strict the setting's social norms and expectations are (etiquette, role clarity, professionalism). Formality is conveyed jointly by the physical/social context (the scene) and by the participants' clothing/dress. Annotation guideline for the reasoner: where the two conflict, the context dominates — e.g. a person in an office wearing a t-shirt is still formal, and someone in a suit at a home kitchen is still informal. This precedence is a definitional guideline, not an enforced OWL axiom (clothing and context are not separately modelled). Examples: job interview (formal); friends hanging out (informal)."@en ;
     sosi:isClosedDimension true ;
     sosi:isSingleValued true .
 
@@ -619,36 +692,36 @@ sosi:FormalSituation rdf:type owl:Class ;
     rdfs:subClassOf sosi:SituationFormality ;
     rdfs:label "Formal"@en ;
     skos:prefLabel "formal"@en ;
-    rdfs:comment "Formal setting, conveyed by both dress and scene. Examples: courtroom hearing; corporate presentation room."@en .
+    rdfs:comment "Formal setting, conveyed by the context (scene) together with dress; the context takes precedence when the two disagree, so a formal scene (e.g. an office) is formal even if a participant is dressed casually. Examples: courtroom hearing; corporate presentation room; an office meeting where someone wears a t-shirt."@en .
 
 sosi:InformalSituation rdf:type owl:Class ;
     rdfs:subClassOf sosi:SituationFormality ;
     rdfs:label "Informal"@en ;
     skos:prefLabel "informal"@en ;
     skos:altLabel "casual"@en ;
-    rdfs:comment "Informal/casual setting with relaxed norms and a more personal tone. Examples: kitchen conversation at home; chatting at a café with friends."@en .
+    rdfs:comment "Informal/casual setting with relaxed norms and a more personal tone, conveyed by the context together with dress; the context takes precedence, so a casual scene stays informal even if a participant is formally dressed. Examples: kitchen conversation at home; chatting at a café with friends."@en .
 
 [] rdf:type owl:AllDisjointClasses ;
    owl:members ( sosi:FormalSituation sosi:InformalSituation ) .
 
-###  http://www.phd-project.org/ontology/sosi#SocialBackground
-sosi:SocialBackground rdf:type owl:Class ;
+###  http://www.phd-project.org/ontology/sosi#CrowdDensity
+sosi:CrowdDensity rdf:type owl:Class ;
     rdfs:subClassOf sosi:SocialEnvironment ;
     owl:equivalentClass [ rdf:type owl:Class ;
                           owl:unionOf ( sosi:Crowded sosi:NotCrowded ) ] ;
-    rdfs:label "Social background (crowd density)"@en ;
-    rdfs:comment "Density of surrounding background people — a contextual condition that shapes the situation without being part of the interaction mechanics. Counts bystanders only; the interacting group is covered by sosi:Cardinality. Named sosi:Background_Participants in 1.x and sosi:CrowdDensity in 2.0.0; restored in 3.0.0 to the name used in the SOSI paper."@en ;
+    rdfs:label "Crowd density"@en ;
+    rdfs:comment "Density of surrounding background people — a contextual condition that shapes the situation without being part of the interaction mechanics. Counts bystanders only; the interacting group is covered by sosi:Cardinality. Named sosi:Background_Participants in 1.x, sosi:CrowdDensity in 2.0.0, renamed sosi:SocialBackground in 3.0.0, and restored to sosi:CrowdDensity in 3.1.0."@en ;
     sosi:isClosedDimension true ;
     sosi:isSingleValued true .
 
 sosi:Crowded rdf:type owl:Class ;
-    rdfs:subClassOf sosi:SocialBackground ;
+    rdfs:subClassOf sosi:CrowdDensity ;
     rdfs:label "Crowded"@en ;
     skos:prefLabel "crowded background"@en ;
     rdfs:comment "High density of surrounding people; the interaction is embedded in a crowded context."@en .
 
 sosi:NotCrowded rdf:type owl:Class ;
-    rdfs:subClassOf sosi:SocialBackground ;
+    rdfs:subClassOf sosi:CrowdDensity ;
     rdfs:label "Not crowded"@en ;
     skos:prefLabel "uncrowded background"@en ;
     rdfs:comment "Few or no surrounding background people."@en .
@@ -665,11 +738,11 @@ sosi:NotCrowded rdf:type owl:Class ;
 sosi:AgentsConstruct rdf:type owl:Class ;
     rdfs:subClassOf sosi:SocialSituationConstruct ;
     rdfs:label "Agents construct (Agent)"@en ;
-    rdfs:comment "Characteristics of the social agents taking part in the situation: how many they are, how they relate, and how engaged they are."@en ;
+    rdfs:comment "Characteristics of the social agents taking part in the situation: how many they are, how they relate, how engaged they are, and the gender, age range and ethnicity attributed to the central unit collectively."@en ;
     rdfs:seeAlso "Burke's dramatistic pentad: the 'agent' element."@en .
 
 [] rdf:type owl:AllDisjointClasses ;
-   owl:members ( sosi:Cardinality sosi:SocialRelationType sosi:EngagementLevel ) .
+   owl:members ( sosi:Cardinality sosi:SocialRelationType sosi:EngagementLevel sosi:Gender sosi:AgeRange sosi:Ethnicity ) .
 
 
 ###  http://www.phd-project.org/ontology/sosi#Cardinality
@@ -678,7 +751,7 @@ sosi:Cardinality rdf:type owl:Class ;
     owl:equivalentClass [ rdf:type owl:Class ;
                           owl:unionOf ( sosi:Solo sosi:GroupCardinality ) ] ;
     rdfs:label "Cardinality (group size)"@en ;
-    rdfs:comment "Group-size category — how many interaction participants are involved in the episode. Even minimal changes in cardinality (dyad vs triad) produce qualitatively different participation structures. Bystanders are not counted here; see sosi:SocialBackground."@en ;
+    rdfs:comment "Group-size category — how many interaction participants are involved in the episode. Even minimal changes in cardinality (dyad vs triad) produce qualitatively different participation structures. Bystanders are not counted here; see sosi:CrowdDensity."@en ;
     dcterms:source "Egbert, M. (2012). Conversation Analysis and Dyads, Triads, and More. Research on Language and Social Interaction 45(4); Gonzalez, R. & Griffin, D. (2004). Measuring Individuals in a Social Environment. SAGE Handbook of Methods in Social Psychology." ;
     sosi:isClosedDimension true ;
     sosi:isSingleValued true .
@@ -697,10 +770,10 @@ sosi:Solo rdf:type owl:Class ;
 sosi:GroupCardinality rdf:type owl:Class ;
     rdfs:subClassOf sosi:Cardinality ;
     owl:equivalentClass [ rdf:type owl:Class ;
-                          owl:unionOf ( sosi:Dyad sosi:Triad sosi:SmallGroup sosi:LargeGroup sosi:Crowd ) ] ;
+                          owl:unionOf ( sosi:Dyad sosi:Triad sosi:SmallGroup sosi:LargeGroup ) ] ;
     rdfs:label "Group"@en ;
     skos:prefLabel "group"@en ;
-    rdfs:comment "Two or more interaction participants. A defined class over the five multi-person values, so that the coarse solo/group contrast used in the first SOSI dataset release is expressible without introducing a second set of labels. Not a leaf value: annotate one of the subclasses."@en ;
+    rdfs:comment "Two or more interaction participants. A defined class over the four multi-person values, so that the coarse solo/group contrast used in the first SOSI dataset release is expressible without introducing a second set of labels. Not a leaf value: annotate one of the subclasses."@en ;
     sosi:minParticipants 2 .
 
 sosi:Dyad rdf:type owl:Class ;
@@ -733,22 +806,14 @@ sosi:SmallGroup rdf:type owl:Class ;
 
 sosi:LargeGroup rdf:type owl:Class ;
     rdfs:subClassOf sosi:GroupCardinality ;
-    rdfs:label "Large group"@en ;
-    skos:prefLabel "large group"@en ;
-    rdfs:comment "More than 10 participants, still individually countable. Examples: a classroom; an all-hands meeting. Distinguished from sosi:Crowd by countability rather than by a participant threshold — the two overlap numerically."@en ;
-    sosi:minParticipants 11 ;
-    sosi:participantsIndividuallyCountable true .
-
-sosi:Crowd rdf:type owl:Class ;
-    rdfs:subClassOf sosi:GroupCardinality ;
-    rdfs:label "Crowd"@en ;
-    skos:prefLabel "crowd"@en ;
-    rdfs:comment "A large social group whose individuals cannot easily be counted. Examples: a station concourse at rush hour; a concert audience. Distinguished from sosi:LargeGroup by the loss of individual countability."@en ;
-    sosi:minParticipants 11 ;
-    sosi:participantsIndividuallyCountable false .
+    rdfs:label "Large group / crowd"@en ;
+    skos:prefLabel "large group or crowd"@en ;
+    skos:altLabel "crowd"@en , "large group"@en ;
+    rdfs:comment "More than 10 participants. Examples: a classroom; an all-hands meeting; a station concourse at rush hour; a concert audience. As of 3.1.0 this value covers both individually-countable large groups and uncountable crowds: the earlier sosi:Crowd value (which split this range by countability rather than by a participant threshold) was merged in, since the countability boundary is hard to perceive reliably."@en ;
+    sosi:minParticipants 11 .
 
 [] rdf:type owl:AllDisjointClasses ;
-   owl:members ( sosi:Solo sosi:Dyad sosi:Triad sosi:SmallGroup sosi:LargeGroup sosi:Crowd ) .
+   owl:members ( sosi:Solo sosi:Dyad sosi:Triad sosi:SmallGroup sosi:LargeGroup ) .
 
 
 ###  http://www.phd-project.org/ontology/sosi#SocialRelationType
@@ -814,6 +879,109 @@ sosi:MixedEngagement rdf:type owl:Class ;
 
 [] rdf:type owl:AllDisjointClasses ;
    owl:members ( sosi:Engaged sosi:Disengaged sosi:MixedEngagement ) .
+
+
+###  http://www.phd-project.org/ontology/sosi#Gender
+sosi:Gender rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgentsConstruct ;
+    owl:equivalentClass [ rdf:type owl:Class ;
+                          owl:unionOf ( sosi:Male sosi:Female ) ] ;
+    rdfs:label "Gender"@en ;
+    rdfs:comment "Gender attributed collectively to the central interacting unit (not to the background people, and not asserted per individual agent). Added in 3.1.0. A mixed-gender value is intentionally not modelled: a group whose participants differ in gender is left unannotated on this dimension."@en ;
+    sosi:isClosedDimension true ;
+    sosi:isSingleValued true .
+
+sosi:Male rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Gender ;
+    rdfs:label "Male"@en ;
+    skos:prefLabel "male"@en ;
+    rdfs:comment "The central interacting unit is male (a single man, or a group of men)."@en .
+
+sosi:Female rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Gender ;
+    rdfs:label "Female"@en ;
+    skos:prefLabel "female"@en ;
+    rdfs:comment "The central interacting unit is female (a single woman, or a group of women)."@en .
+
+[] rdf:type owl:AllDisjointClasses ;
+   owl:members ( sosi:Male sosi:Female ) .
+
+
+###  http://www.phd-project.org/ontology/sosi#AgeRange
+sosi:AgeRange rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgentsConstruct ;
+    owl:equivalentClass [ rdf:type owl:Class ;
+                          owl:unionOf ( sosi:Young sosi:MidAge sosi:Old ) ] ;
+    rdfs:label "Age range"@en ;
+    rdfs:comment "Age band attributed collectively to the central interacting unit. Added in 3.1.0."@en ;
+    sosi:isClosedDimension true ;
+    sosi:isSingleValued true .
+
+sosi:Young rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgeRange ;
+    rdfs:label "Young"@en ;
+    skos:prefLabel "young"@en ;
+    rdfs:comment "Young age band (roughly children, adolescents and young adults)."@en .
+
+sosi:MidAge rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgeRange ;
+    rdfs:label "Mid-age"@en ;
+    skos:prefLabel "middle-aged"@en ;
+    rdfs:comment "Middle age band (roughly adults in mid-life)."@en .
+
+sosi:Old rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgeRange ;
+    rdfs:label "Old"@en ;
+    skos:prefLabel "old"@en ;
+    skos:altLabel "elderly"@en ;
+    rdfs:comment "Older age band (roughly older adults / the elderly)."@en .
+
+[] rdf:type owl:AllDisjointClasses ;
+   owl:members ( sosi:Young sosi:MidAge sosi:Old ) .
+
+
+###  http://www.phd-project.org/ontology/sosi#Ethnicity
+sosi:Ethnicity rdf:type owl:Class ;
+    rdfs:subClassOf sosi:AgentsConstruct ;
+    owl:equivalentClass [ rdf:type owl:Class ;
+                          owl:unionOf ( sosi:White sosi:Black sosi:EastAsian sosi:SouthAsian sosi:Latino sosi:MiddleEastern ) ] ;
+    rdfs:label "Ethnicity"@en ;
+    rdfs:comment "Ethnicity attributed collectively to the central interacting unit. Added in 3.1.0. A coarse, dataset-defined enumeration capturing an externally apparent grouping for annotation, not a claim about the participants' identity."@en ;
+    sosi:isClosedDimension true ;
+    sosi:isSingleValued true .
+
+sosi:White rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "White"@en ;
+    skos:prefLabel "white"@en .
+
+sosi:Black rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "Black"@en ;
+    skos:prefLabel "black"@en .
+
+sosi:EastAsian rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "East Asian"@en ;
+    skos:prefLabel "east asian"@en .
+
+sosi:SouthAsian rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "South Asian"@en ;
+    skos:prefLabel "south asian"@en .
+
+sosi:Latino rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "Latino"@en ;
+    skos:prefLabel "latino"@en .
+
+sosi:MiddleEastern rdf:type owl:Class ;
+    rdfs:subClassOf sosi:Ethnicity ;
+    rdfs:label "Middle Eastern"@en ;
+    skos:prefLabel "middle eastern"@en .
+
+[] rdf:type owl:AllDisjointClasses ;
+   owl:members ( sosi:White sosi:Black sosi:EastAsian sosi:SouthAsian sosi:Latino sosi:MiddleEastern ) .
 
 
 ### ============================================================
@@ -952,7 +1120,7 @@ sosi:AimlessInteraction rdf:type owl:Class ;
 #  that does not handle GCIs still applies them.
 #
 #  Deliberately NOT constrained, so that the omissions read as decisions:
-#    * sosi:crowd + sosi:notCrowded — a large interacting group in an otherwise
+#    * sosi:largeGroup + sosi:notCrowded — a large interacting group in an otherwise
 #      empty space is unusual but possible; the background ring is independent
 #      of the group.
 #    * sosi:solo + sosi:givingSpeech — the sosi:Solo comment's own example is a
@@ -1041,11 +1209,14 @@ sosi:FullyAnnotatedSituation rdf:type owl:Class ;
                                                [ rdf:type owl:Restriction ; owl:onProperty sosi:hasSpeechActivity ;       owl:someValuesFrom sosi:SpeechActivity ]
                                                [ rdf:type owl:Restriction ; owl:onProperty sosi:hasNonverbalSignaling ;   owl:someValuesFrom sosi:NonverbalSignaling ]
                                                [ rdf:type owl:Restriction ; owl:onProperty sosi:hasEnvironmentType ;      owl:someValuesFrom sosi:EnvironmentType ]
-                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasSocialBackground ;     owl:someValuesFrom sosi:SocialBackground ]
+                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasCrowdDensity ;        owl:someValuesFrom sosi:CrowdDensity ]
                                                [ rdf:type owl:Restriction ; owl:onProperty sosi:hasInterdependenceLevel ; owl:someValuesFrom sosi:InterdependenceLevel ]
-                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasInteractionPurpose ;   owl:someValuesFrom sosi:InteractionPurpose ] ) ] ;
+                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasInteractionPurpose ;   owl:someValuesFrom sosi:InteractionPurpose ]
+                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasAgeRange ;             owl:someValuesFrom sosi:AgeRange ]
+                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasEthnicity ;           owl:someValuesFrom sosi:Ethnicity ]
+                                               [ rdf:type owl:Restriction ; owl:onProperty sosi:hasActivity ;            owl:someValuesFrom sosi:Activity ] ) ] ;
     rdfs:label "Fully annotated situation"@en ;
-    rdfs:comment "A situation carrying a value for every single-valued dimension that applies to any situation regardless of cardinality. Incompleteness is detected by classification against this class rather than by inconsistency: under open-world semantics a missing value is not a contradiction, so a subclass axiom would be inert. The interpersonal dimensions (relation type, proxemics, relative body placement) are excluded because they do not apply to sosi:SoloSituation, as is the multi-valued sosi:hasInteractionType and the open sosi:hasLocation."@en .
+    rdfs:comment "A situation carrying a value for every single-valued dimension that applies to any situation regardless of cardinality. Incompleteness is detected by classification against this class rather than by inconsistency: under open-world semantics a missing value is not a contradiction, so a subclass axiom would be inert. The interpersonal dimensions (relation type, proxemics, relative body placement) are excluded because they do not apply to sosi:SoloSituation, as is the multi-valued sosi:hasInteractionType and the open sosi:hasLocation. sosi:hasParticipantGender is also excluded: because a mixed-gender group has no value, requiring it would make such scenes permanently incomplete. Age range, ethnicity and activity are required (added in 3.1.0)."@en .
 
 
 #################################################################
@@ -1061,11 +1232,10 @@ sosi:solo rdf:type owl:NamedIndividual , sosi:Solo ; rdfs:label "Solo"@en .
 sosi:dyad rdf:type owl:NamedIndividual , sosi:Dyad ; rdfs:label "Dyad"@en .
 sosi:triad rdf:type owl:NamedIndividual , sosi:Triad ; rdfs:label "Triad"@en .
 sosi:smallGroup rdf:type owl:NamedIndividual , sosi:SmallGroup ; rdfs:label "Small group"@en .
-sosi:largeGroup rdf:type owl:NamedIndividual , sosi:LargeGroup ; rdfs:label "Large group"@en .
-sosi:crowd rdf:type owl:NamedIndividual , sosi:Crowd ; rdfs:label "Crowd"@en .
+sosi:largeGroup rdf:type owl:NamedIndividual , sosi:LargeGroup ; rdfs:label "Large group / crowd"@en .
 
 [] rdf:type owl:AllDifferent ;
-   owl:distinctMembers ( sosi:solo sosi:dyad sosi:triad sosi:smallGroup sosi:largeGroup sosi:crowd ) .
+   owl:distinctMembers ( sosi:solo sosi:dyad sosi:triad sosi:smallGroup sosi:largeGroup ) .
 
 ### Affective valence
 sosi:negative rdf:type owl:NamedIndividual , sosi:NegativeValence ; rdfs:label "Negative"@en .
@@ -1075,6 +1245,15 @@ sosi:positive rdf:type owl:NamedIndividual , sosi:PositiveValence ; rdfs:label "
 [] rdf:type owl:AllDifferent ;
    owl:distinctMembers ( sosi:negative sosi:neutral sosi:positive ) .
 
+### Activity
+sosi:handlingPhone rdf:type owl:NamedIndividual , sosi:HandlingPhone ; rdfs:label "Handling a phone"@en .
+sosi:routineTask rdf:type owl:NamedIndividual , sosi:RoutineTask ; rdfs:label "Routine task"@en .
+sosi:observingSurroundings rdf:type owl:NamedIndividual , sosi:ObservingSurroundings ; rdfs:label "Observing the surroundings"@en .
+sosi:movingThroughSpace rdf:type owl:NamedIndividual , sosi:MovingThroughSpace ; rdfs:label "Moving through the space"@en .
+
+[] rdf:type owl:AllDifferent ;
+   owl:distinctMembers ( sosi:handlingPhone sosi:routineTask sosi:observingSurroundings sosi:movingThroughSpace ) .
+
 ### Engagement level
 sosi:engaged rdf:type owl:NamedIndividual , sosi:Engaged ; rdfs:label "Engaged"@en .
 sosi:disengaged rdf:type owl:NamedIndividual , sosi:Disengaged ; rdfs:label "Disengaged"@en .
@@ -1083,6 +1262,32 @@ sosi:mixedEngagement rdf:type owl:NamedIndividual , sosi:MixedEngagement ; rdfs:
 [] rdf:type owl:AllDifferent ;
    owl:distinctMembers ( sosi:engaged sosi:disengaged sosi:mixedEngagement ) .
 
+### Gender
+sosi:male rdf:type owl:NamedIndividual , sosi:Male ; rdfs:label "Male"@en .
+sosi:female rdf:type owl:NamedIndividual , sosi:Female ; rdfs:label "Female"@en .
+
+[] rdf:type owl:AllDifferent ;
+   owl:distinctMembers ( sosi:male sosi:female ) .
+
+### Age range
+sosi:young rdf:type owl:NamedIndividual , sosi:Young ; rdfs:label "Young"@en .
+sosi:midAge rdf:type owl:NamedIndividual , sosi:MidAge ; rdfs:label "Mid-age"@en .
+sosi:old rdf:type owl:NamedIndividual , sosi:Old ; rdfs:label "Old"@en .
+
+[] rdf:type owl:AllDifferent ;
+   owl:distinctMembers ( sosi:young sosi:midAge sosi:old ) .
+
+### Ethnicity
+sosi:white rdf:type owl:NamedIndividual , sosi:White ; rdfs:label "White"@en .
+sosi:black rdf:type owl:NamedIndividual , sosi:Black ; rdfs:label "Black"@en .
+sosi:eastAsian rdf:type owl:NamedIndividual , sosi:EastAsian ; rdfs:label "East Asian"@en .
+sosi:southAsian rdf:type owl:NamedIndividual , sosi:SouthAsian ; rdfs:label "South Asian"@en .
+sosi:latino rdf:type owl:NamedIndividual , sosi:Latino ; rdfs:label "Latino"@en .
+sosi:middleEastern rdf:type owl:NamedIndividual , sosi:MiddleEastern ; rdfs:label "Middle Eastern"@en .
+
+[] rdf:type owl:AllDifferent ;
+   owl:distinctMembers ( sosi:white sosi:black sosi:eastAsian sosi:southAsian sosi:latino sosi:middleEastern ) .
+
 ### Situation formality
 sosi:formal rdf:type owl:NamedIndividual , sosi:FormalSituation ; rdfs:label "Formal"@en .
 sosi:informal rdf:type owl:NamedIndividual , sosi:InformalSituation ; rdfs:label "Informal"@en .
@@ -1090,7 +1295,7 @@ sosi:informal rdf:type owl:NamedIndividual , sosi:InformalSituation ; rdfs:label
 [] rdf:type owl:AllDifferent ;
    owl:distinctMembers ( sosi:formal sosi:informal ) .
 
-### Social background
+### Crowd density
 sosi:crowded rdf:type owl:NamedIndividual , sosi:Crowded ; rdfs:label "Crowded"@en .
 sosi:notCrowded rdf:type owl:NamedIndividual , sosi:NotCrowded ; rdfs:label "Not crowded"@en .
 
@@ -1194,11 +1399,17 @@ sosi:crying rdf:type owl:NamedIndividual , sosi:Crying ; rdfs:label "Crying"@en 
 #  hardcoded in existing annotation sets continue to resolve. Do not use these
 #  in new work; see migration-v2-to-v3.csv.
 
-sosi:CrowdDensity rdf:type owl:Class ;
+sosi:SocialBackground rdf:type owl:Class ;
     owl:deprecated true ;
-    owl:equivalentClass sosi:SocialBackground ;
-    rdfs:label "Crowd density (background) [deprecated]"@en ;
-    rdfs:comment "Deprecated in 3.0.0. Use sosi:SocialBackground, which is the name used in the SOSI paper."@en .
+    owl:equivalentClass sosi:CrowdDensity ;
+    rdfs:label "Social background [deprecated]"@en ;
+    rdfs:comment "Deprecated in 3.1.0. Use sosi:CrowdDensity. This was the 3.0.0 name for the crowd-density dimension; 3.1.0 restored the shorter sosi:CrowdDensity."@en .
+
+sosi:Crowd rdf:type owl:Class ;
+    owl:deprecated true ;
+    owl:equivalentClass sosi:LargeGroup ;
+    rdfs:label "Crowd [deprecated]"@en ;
+    rdfs:comment "Deprecated in 3.1.0. Merged into sosi:LargeGroup, which now covers both individually-countable large groups and uncountable crowds (11+ participants); the countability boundary that previously separated them was removed."@en .
 
 sosi:Speaking rdf:type owl:Class ;
     owl:deprecated true ;
@@ -1218,11 +1429,17 @@ sosi:NonVerbalVocalization rdf:type owl:Class ;
     rdfs:label "Nonverbal vocalization [deprecated]"@en ;
     rdfs:comment "Deprecated in 3.0.0 in favour of the consistently capitalised sosi:NonverbalVocalization."@en .
 
+sosi:hasSocialBackground rdf:type owl:ObjectProperty ;
+    owl:deprecated true ;
+    owl:equivalentProperty sosi:hasCrowdDensity ;
+    rdfs:label "has social background [deprecated]"@en ;
+    rdfs:comment "Deprecated in 3.1.0. Use sosi:hasCrowdDensity. This was the 3.0.0 name for the property."@en .
+
 sosi:hasCrowdContextBg rdf:type owl:ObjectProperty ;
     owl:deprecated true ;
-    owl:equivalentProperty sosi:hasSocialBackground ;
+    owl:equivalentProperty sosi:hasCrowdDensity ;
     rdfs:label "has crowd context background [deprecated]"@en ;
-    rdfs:comment "Deprecated in 3.0.0. Use sosi:hasSocialBackground. Retained because this IRI is cited in the SOSI paper."@en .
+    rdfs:comment "Deprecated in 3.0.0 (was the 2.x name). Use sosi:hasCrowdDensity. Retained because this IRI is cited in the SOSI paper."@en .
 
 sosi:hasPhysicalType rdf:type owl:ObjectProperty ;
     owl:deprecated true ;
@@ -1255,3 +1472,8 @@ sosi:public rdf:type owl:NamedIndividual ;
     owl:deprecated true ;
     owl:sameAs sosi:publicProxemics ;
     rdfs:comment "Deprecated in 3.0.0. Use sosi:publicProxemics."@en .
+
+sosi:crowd rdf:type owl:NamedIndividual ;
+    owl:deprecated true ;
+    owl:sameAs sosi:largeGroup ;
+    rdfs:comment "Deprecated in 3.1.0. Use sosi:largeGroup, which now covers crowds as well (the large-group/crowd distinction was removed)."@en .
